@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/root/MpRpc/bin/provider"
+			"path" : "/root/MpRpc/lib/libmprpc.so"
 		}
 	],
 	"backtrace" : 1,
@@ -10,12 +10,12 @@
 	{
 		"commands" : 
 		[
-			"add_executable",
+			"add_library",
 			"include_directories"
 		],
 		"files" : 
 		[
-			"example/callee/CMakeLists.txt",
+			"src/CMakeLists.txt",
 			"CMakeLists.txt"
 		],
 		"nodes" : 
@@ -58,14 +58,20 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g"
+					"fragment" : "-g -fPIC"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"define" : "mprpc_EXPORTS"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 3,
-					"path" : "/root/MpRpc/src"
+					"path" : "/root/MpRpc/src/include"
 				},
 				{
 					"backtrace" : 4,
@@ -84,28 +90,24 @@
 			]
 		}
 	],
-	"id" : "provider::@493cd8b262c97a98b12b",
+	"id" : "mprpc::@145eef247bfb46b6828c",
 	"link" : 
 	{
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-g",
-				"role" : "flags"
-			},
-			{
-				"fragment" : "-rdynamic",
+				"fragment" : "",
 				"role" : "flags"
 			}
 		],
 		"language" : "CXX"
 	},
-	"name" : "provider",
-	"nameOnDisk" : "provider",
+	"name" : "mprpc",
+	"nameOnDisk" : "libmprpc.so",
 	"paths" : 
 	{
-		"build" : "example/callee",
-		"source" : "example/callee"
+		"build" : "src",
+		"source" : "src"
 	},
 	"sourceGroups" : 
 	[
@@ -123,15 +125,15 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "example/callee/userservice.cc",
+			"path" : "src/mprpcapplication.cc",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "example/user.pb.cc",
+			"path" : "src/rpcprovider.cc",
 			"sourceGroupIndex" : 0
 		}
 	],
-	"type" : "EXECUTABLE"
+	"type" : "SHARED_LIBRARY"
 }

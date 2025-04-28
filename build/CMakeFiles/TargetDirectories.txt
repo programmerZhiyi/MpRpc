@@ -1,5 +1,8 @@
 /root/MpRpc/build/CMakeFiles/edit_cache.dir
 /root/MpRpc/build/CMakeFiles/rebuild_cache.dir
+/root/MpRpc/build/src/CMakeFiles/mprpc.dir
+/root/MpRpc/build/src/CMakeFiles/edit_cache.dir
+/root/MpRpc/build/src/CMakeFiles/rebuild_cache.dir
 /root/MpRpc/build/example/CMakeFiles/edit_cache.dir
 /root/MpRpc/build/example/CMakeFiles/rebuild_cache.dir
 /root/MpRpc/build/example/callee/CMakeFiles/provider.dir
