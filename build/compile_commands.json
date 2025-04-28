@@ -6,6 +6,11 @@
 },
 {
   "directory": "/root/MpRpc/build/src",
+  "command": "/usr/bin/g++ -Dmprpc_EXPORTS -I/root/MpRpc/src/include -I/root/MpRpc/example -I/root/MpRpc/lib -g -fPIC -o CMakeFiles/mprpc.dir/mprpcconfig.cc.o -c /root/MpRpc/src/mprpcconfig.cc",
+  "file": "/root/MpRpc/src/mprpcconfig.cc"
+},
+{
+  "directory": "/root/MpRpc/build/src",
   "command": "/usr/bin/g++ -Dmprpc_EXPORTS -I/root/MpRpc/src/include -I/root/MpRpc/example -I/root/MpRpc/lib -g -fPIC -o CMakeFiles/mprpc.dir/rpcprovider.cc.o -c /root/MpRpc/src/rpcprovider.cc",
   "file": "/root/MpRpc/src/rpcprovider.cc"
 },

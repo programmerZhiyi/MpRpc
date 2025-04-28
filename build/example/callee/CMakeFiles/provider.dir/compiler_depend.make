@@ -691,8 +691,13 @@ example/callee/CMakeFiles/provider.dir/userservice.cc.o: ../example/callee/users
   /usr/include/google/protobuf/message.h \
   /usr/include/google/protobuf/extension_set.h \
   /usr/include/c++/11/cassert \
-  /usr/include/google/protobuf/service.h
+  /usr/include/google/protobuf/service.h \
+  ../src/include/mprpcapplication.h \
+  ../src/include/mprpcconfig.h \
+  ../src/include/rpcprovider.h
 
+
+../src/include/rpcprovider.h:
 
 ../example/callee/userservice.cc:
 
@@ -829,6 +834,8 @@ example/callee/CMakeFiles/provider.dir/userservice.cc.o: ../example/callee/users
 /usr/include/c++/11/bits/string_view.tcc:
 
 /usr/include/c++/11/bits/functional_hash.h:
+
+../src/include/mprpcapplication.h:
 
 /usr/include/c++/11/bits/shared_ptr.h:
 
@@ -1085,6 +1092,8 @@ example/callee/CMakeFiles/provider.dir/userservice.cc.o: ../example/callee/users
 /usr/include/x86_64-linux-gnu/sys/cdefs.h:
 
 /usr/include/c++/11/limits:
+
+../src/include/mprpcconfig.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
 
