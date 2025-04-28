@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/root/MpRpc/build/example/callee",
+  "command": "/usr/bin/g++  -I/root/MpRpc/src -I/root/MpRpc/example -I/root/MpRpc/lib -g -o CMakeFiles/provider.dir/userservice.cc.o -c /root/MpRpc/example/callee/userservice.cc",
+  "file": "/root/MpRpc/example/callee/userservice.cc"
+},
+{
+  "directory": "/root/MpRpc/build/example/callee",
+  "command": "/usr/bin/g++  -I/root/MpRpc/src -I/root/MpRpc/example -I/root/MpRpc/lib -g -o CMakeFiles/provider.dir/__/user.pb.cc.o -c /root/MpRpc/example/user.pb.cc",
+  "file": "/root/MpRpc/example/user.pb.cc"
+}
+]
