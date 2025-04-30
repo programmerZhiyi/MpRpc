@@ -9,6 +9,22 @@ int main(int argc, char **argv) {
 
     // 演示调用远程发布的rpc方法Login
     example::UserServiceRpc_Stub stub(new MprpcChannel());
-    //stub.Login(); // RpcChannel->RpcChannel::callMethod 集中来做所有rpc方法调用的参数序列化和网络发送
+    // rpc方法的请求参数
+    example::LoginRequest request;
+    request.set_name("zhangsan");
+    request.set_pwd("123456");
+    // rpc方法的响应参数
+    example::LoginResponse response;
+    // 发起rpc方法的调用   同步的rpc调用过程   MprpcChannel::callmethod
+    stub.Login(nullptr, &request, &response, nullptr); // RpcChannel->RpcChannel::callMethod 集中来做所有rpc方法调用的参数序列化和网络发送
+    
+    // 一次rpc调用完成，读调用的结果
+    if (0 == response.result().errcode()) {
+        std::cout << "rpc call success!" << std::endl;
+        std::cout << "login result: " << response.success() << std::endl;
+    } else {
+        std::cout << "rpc call failed! error: " << response.result().errmsg() << std::endl;
+    }
+    
     return 0;
 }
