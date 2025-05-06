@@ -26,5 +26,23 @@ int main(int argc, char **argv) {
         std::cout << "rpc call failed! error: " << response.result().errmsg() << std::endl;
     }
     
+    // 演示调用远程发布的rpc方法Register
+    example::RegisterRequest register_request;
+    register_request.set_id(10001);
+    register_request.set_name("zhangsan");
+    register_request.set_pwd("123456");
+    example::RegisterResponse register_response;
+
+    // 以同步的方式调用远程的rpc方法，等待返回结果
+    stub.Register(nullptr, &register_request, &register_response, nullptr);
+
+    // 一次rpc调用完成，读调用的结果
+    if (0 == register_response.result().errcode()) {
+        std::cout << "rpc call success!" << std::endl;
+        std::cout << "register result: " << register_response.success() << std::endl;
+    } else {
+        std::cout << "rpc call failed! error: " << register_response.result().errmsg() << std::endl;
+    }
+
     return 0;
 }
