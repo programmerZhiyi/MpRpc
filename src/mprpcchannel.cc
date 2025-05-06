@@ -102,8 +102,9 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor *method,
     }
 
     // 反序列化rpc响应的字符流
-    std::string response_str(recv_buf, 0, recv_size);
-    if (!response->ParseFromString(response_str)) {
+    //std::string response_str(recv_buf, 0, recv_size); // bug出现问题，recv_buf中遇到了\0，导致字符串截断
+    //if (!response->ParseFromString(response_str)) {
+    if (!response->ParseFromArray(recv_buf, recv_size)) {
         std::cout << "rpc response error!" << std::endl;
         close(clientfd);
         return;
