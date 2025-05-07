@@ -2,6 +2,7 @@
 #include "mprpcapplication.h"
 #include <semaphore.h>
 #include <iostream>
+#include "mprpclogger.h"
 
 // 全局的watcher观察器   zkserver给zkclient的通知
 void global_watcher(zhandle_t *zh, int type, int state, const char *path, void *watcherCtx) {
@@ -37,7 +38,7 @@ void ZkClient::Start() {
     */
     m_zhandle = zookeeper_init(connstr.c_str(), global_watcher, 30000, nullptr, nullptr, 0);
     if (m_zhandle == nullptr) {
-        std::cout << "zookeeper_init error!" << std::endl;
+        LOG(ERROR) << "zookeeper_init error! errno:" << errno;
         exit(EXIT_FAILURE);
     }
 
@@ -46,7 +47,7 @@ void ZkClient::Start() {
     zoo_set_context(m_zhandle, &sem); // 设置信号量到zkclient的上下文中
 
     sem_wait(&sem); // 等待连接成功的信号
-    std::cout << "zookeeper_init success!" << std::endl;
+    LOG(INFO) << "zookeeper connect success!"; // 连接成功
 }
 
 void ZkClient::Create(const char *path, const char *data, int datalen, int state) {
@@ -57,9 +58,9 @@ void ZkClient::Create(const char *path, const char *data, int datalen, int state
     if (ZNONODE == flag) {
         flag = zoo_create(m_zhandle, path, data, datalen, &ZOO_OPEN_ACL_UNSAFE, state, path_buffer, bufferlen);
         if (flag == ZOK) {
-            std::cout << "create znode success! path:" << path << std::endl;
+            LOG(INFO) << "create znode success! path:" << path;
         } else {
-            std::cout << "create znode error! errno:" << flag << std::endl;
+            LOG(ERROR) << "create znode error! path:" << path << " errno:" << flag;
             exit(EXIT_FAILURE);
         }
     }
@@ -73,8 +74,7 @@ std::string ZkClient::GetData(const char *path) {
     if (flag == ZOK) {
         return buffer;
     } else {
-        std::cout << "get znode data error! errno:" << flag << std::endl;
-        std::cout << "path:" << path << std::endl;
+        LOG(ERROR) << "get znode data error! path:" << path << " errno:" << flag;
         return "";
     }
 }

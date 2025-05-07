@@ -1,6 +1,7 @@
 #include "rpcprovider.h"
 #include "mprpcapplication.h"
 #include "rpcheader.pb.h"
+#include "mprpclogger.h"
 
 /*
 service_name => service描述
@@ -114,7 +115,7 @@ void RpcProvider::OnMessage(const muduo::net::TcpConnectionPtr &conn, muduo::net
         args_size = rpcHeader.args_size();
     } else {
         // 数据头反序列化失败
-        std::cout << "rpc_header_str:" << rpc_header_str << " parse error!" << std::endl;
+        MprpcLogger::Error("rpcHeader parse error!");
         return;
     }
     // 获取rpc方法参数的字符流数据

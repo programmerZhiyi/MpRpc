@@ -1,9 +1,8 @@
 #include "mprpcapplication.h"
-#include <iostream>
-#include <unistd.h>
-#include <string>
 
-MprpcConfig MprpcApplication::m_config;
+MprpcConfig MprpcApplication::m_config; // 全局配置对象
+std::mutex MprpcApplication::m_mutex; // 线程安全锁
+MprpcApplication *MprpcApplication::m_application = nullptr; // 全局唯一单例访问对象
 
 void ShowArgsHelp() {
     std::cout << "format: command -i <configfile>" << std::endl;
@@ -43,8 +42,19 @@ void MprpcApplication::Init(int argc, char **argv) {
 }
 
 MprpcApplication& MprpcApplication::GetInstance() {
-    static MprpcApplication app;
-    return app;
+    std::lock_guard<std::mutex> lock(m_mutex); // 加锁，保证线程安全
+    if (m_application == nullptr) {
+        m_application = new MprpcApplication(); // 创建单例对象
+        atexit(deleteInstance); // 注册退出函数
+    }
+    return *m_application;
+}
+
+// 程序退出时自动调用的函数，用于销毁单例对象
+void MprpcApplication::deleteInstance() {
+    if (m_application) {
+        delete m_application;
+    }
 }
 
 MprpcConfig& MprpcApplication::GetConfig() {

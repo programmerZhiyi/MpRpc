@@ -9,6 +9,10 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include "mprpccontroller.h"
+#include <memory>
+#include "mprpclogger.h"
+
+std::mutex g_data_mutex; // 线程安全锁
 
 /*
 header_size + service_name method_name args_size + args
@@ -70,6 +74,7 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor *method,
         char errstr[512] = {0};
         sprintf(errstr, "create socket error! errno:%d", errno);
         controller->SetFailed(errstr);
+        LOG(ERROR) << "socket error:" << errstr;  // 记录错误日志
         return;
     }
 
@@ -80,14 +85,18 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor *method,
     ZkClient zkCli;
     zkCli.Start();
     std::string method_path = "/" + service_name + "/" + method_name;
+    std::unique_lock<std::mutex> lock(g_data_mutex); // 加锁，保证线程安全
     std::string host_data = zkCli.GetData(method_path.c_str());
+    lock.unlock(); // 解锁
     if (host_data == "") {
         controller->SetFailed(method_path + " is not exist!");
+        LOG(ERROR) << method_path + " is not exist!";  // 记录错误日志
         return;
     }
     int idx = host_data.find(":");
     if (idx == -1) {
         controller->SetFailed(method_path + " address is invalid!");
+        LOG(ERROR) << method_path + " address is invalid!";  // 记录错误日志
         return;
     }
 
@@ -105,6 +114,7 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor *method,
         char errstr[512] = {0};
         sprintf(errstr, "connect error! errno:%d", errno);
         controller->SetFailed(errstr);
+        LOG(ERROR) << "connect server error" << errstr;  // 记录错误日志
         return;
     }
 

@@ -13,4 +13,5 @@ public:
                     const google::protobuf::Message *request,
                     google::protobuf::Message *response,
                     google::protobuf::Closure *done);
+private:
 };
