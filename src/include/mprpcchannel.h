@@ -3,6 +3,7 @@
 #include <google/protobuf/service.h>
 #include <google/protobuf/message.h>
 #include <google/protobuf/descriptor.h>
+#include "zookeeperutil.h"
 
 class MprpcChannel : public google::protobuf::RpcChannel {
 public:

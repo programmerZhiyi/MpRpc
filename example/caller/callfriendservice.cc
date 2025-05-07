@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
     example::FriendServiceRpc_Stub stub(new MprpcChannel());
     // rpc方法的请求参数
     example::GetFriendsListRequest request;
-    request.set_id(10001);
+    request.set_id(1);
     // rpc方法的响应参数
     example::GetFriendsListResponse response;
     // 发起rpc方法的调用   同步的rpc调用过程   MprpcChannel::callmethod
