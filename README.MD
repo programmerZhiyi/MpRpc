@@ -25,8 +25,6 @@ MpRpc 是一个基于 Protobuf 和 Muduo 网络库实现的轻量级 RPC(远程�
 
 ## 系统架构
 
-![MpRpc架构图](https://example.com/mprpc_architecture.png)
-
 该框架主要包含以下几个核心组件：
 
 ### 服务端组件
