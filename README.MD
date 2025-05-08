@@ -347,7 +347,3 @@ uint16_t port = atoi(host_data.substr(idx + 1, host_data.size()).c_str());
 1. Fork项目并提交Pull Request
 2. 提交Issue报告Bug或提出新功能
 3. 改进文档和示例
-
-## 许可证
-
-MIT
