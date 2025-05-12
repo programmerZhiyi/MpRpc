@@ -4,6 +4,7 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/descriptor.h>
 #include "zookeeperutil.h"
+#include <string>
 
 class MprpcChannel : public google::protobuf::RpcChannel {
 public:
@@ -13,5 +14,7 @@ public:
                     const google::protobuf::Message *request,
                     google::protobuf::Message *response,
                     google::protobuf::Closure *done);
+    // MprpcChannel(std::string ip, short port, bool connectNow);
+    // MprpcChannel();
 private:
 };

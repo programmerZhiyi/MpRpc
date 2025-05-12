@@ -151,3 +151,6 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor *method,
 
     close(clientfd);
 }
+
+// MprpcChannel::MprpcChannel() {
+// }
