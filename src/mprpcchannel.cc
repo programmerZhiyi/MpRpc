@@ -84,19 +84,20 @@ void MprpcChannel::CallMethod(const google::protobuf::MethodDescriptor *method,
     // rpc调用方想调用service_name的method_name服务，需要查询zk上该服务所在的host信息
     ZkClient zkCli;
     zkCli.Start();
-    std::string method_path = "/" + service_name + "/" + method_name;
+    std::string service_path = "/" + service_name;
     std::unique_lock<std::mutex> lock(g_data_mutex); // 加锁，保证线程安全
-    std::string host_data = zkCli.GetData(method_path.c_str());
+    std::string host_data = zkCli.GetData(service_path.c_str());
+    //std::cout << "host_data:" << host_data << std::endl;
     lock.unlock(); // 解锁
     if (host_data == "") {
-        controller->SetFailed(method_path + " is not exist!");
-        LOG(ERROR) << method_path + " is not exist!";  // 记录错误日志
+        controller->SetFailed(service_path + " is not exist!");
+        LOG(ERROR) << service_path + " is not exist!";  // 记录错误日志
         return;
     }
     int idx = host_data.find(":");
     if (idx == -1) {
-        controller->SetFailed(method_path + " address is invalid!");
-        LOG(ERROR) << method_path + " address is invalid!";  // 记录错误日志
+        controller->SetFailed(service_path + " address is invalid!");
+        LOG(ERROR) << service_path + " address is invalid!";  // 记录错误日志
         return;
     }
 

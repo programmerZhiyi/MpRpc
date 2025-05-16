@@ -57,15 +57,35 @@ void RpcProvider::Run() {
     for (auto &sp : m_serviceMap) {
         // /service_name
         std::string service_path = "/" + sp.first;
-        zkCli.Create(service_path.c_str(), nullptr, 0);
-        for (auto &mp : sp.second.m_methodMap) {
-            // /service_name/method_name
-            std::string method_path = service_path + "/" + mp.first;
-            char method_path_data[128] = {0};
-            sprintf(method_path_data, "%s:%d", ip.c_str(), port);
-            // ZOO_EPHEMERAL表示znode是一个临时节点
-            zkCli.Create(method_path.c_str(), method_path_data, sizeof(method_path_data), ZOO_EPHEMERAL);
+        char service_data[128] = {0};
+        sprintf(service_data, "%s:%d", ip.c_str(), port);
+        
+        // 先尝试创建服务节点（永久性节点），并存储服务器信息
+        // 如果节点已经存在，则更新节点数据
+        if (zkCli.Exists(service_path.c_str())) {
+            // 节点已存在，更新数据
+            zkCli.SetData(service_path.c_str(), service_data, strlen(service_data));
+            MprpcLogger::Info(service_path + " already exists, update data: " + service_data);
+        } else {
+            // 节点不存在，创建永久节点
+            zkCli.Create(service_path.c_str(), service_data, strlen(service_data), 0); // 0表示永久节点
+            MprpcLogger::Info(service_path + " created with data: " + service_data);
         }
+        
+        // 验证数据是否正确存储
+        std::string stored_data = zkCli.GetData(service_path.c_str());
+        MprpcLogger::Info(service_path + " stored data: " + stored_data);
+        
+        // for (auto &mp : sp.second.m_methodMap) {
+        //     // /service_name/method_name
+        //     std::string method_path = service_path + "/" + mp.first;
+        //     char method_path_data[128] = {0};
+        //     sprintf(method_path_data, "%s:%d", ip.c_str(), port);
+        //     // ZOO_EPHEMERAL表示znode是一个临时节点
+        //     zkCli.Create(method_path.c_str(), method_path_data, strlen(method_path_data), ZOO_EPHEMERAL);
+        //     std::string stored_method_data = zkCli.GetData(method_path.c_str());
+        //     MprpcLogger::Info(method_path + " stored data: " + stored_method_data);
+        // }
     }
 
     // rpc服务端准备启动，打印信息

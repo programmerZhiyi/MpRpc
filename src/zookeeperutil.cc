@@ -54,16 +54,16 @@ void ZkClient::Create(const char *path, const char *data, int datalen, int state
     char path_buffer[128];
     int bufferlen = sizeof(path_buffer);
     int flag;
-    flag = zoo_exists(m_zhandle, path, 0, nullptr);
-    if (ZNONODE == flag) {
-        flag = zoo_create(m_zhandle, path, data, datalen, &ZOO_OPEN_ACL_UNSAFE, state, path_buffer, bufferlen);
-        if (flag == ZOK) {
-            LOG(INFO) << "create znode success! path:" << path;
-        } else {
-            LOG(ERROR) << "create znode error! path:" << path << " errno:" << flag;
-            exit(EXIT_FAILURE);
-        }
+    // flag = zoo_exists(m_zhandle, path, 0, nullptr);
+    //if (ZNONODE == flag) {
+    flag = zoo_create(m_zhandle, path, data, datalen, &ZOO_OPEN_ACL_UNSAFE, state, path_buffer, bufferlen);
+    if (flag == ZOK) {
+        LOG(INFO) << "create znode success! path:" << path;
+    } else {
+        LOG(ERROR) << "create znode error! path:" << path << " errno:" << flag;
+        exit(EXIT_FAILURE);
     }
+    //}
 }
 
 // 根据指定的path， 获取znode节点的数据
@@ -76,5 +76,26 @@ std::string ZkClient::GetData(const char *path) {
     } else {
         LOG(ERROR) << "get znode data error! path:" << path << " errno:" << flag;
         return "";
+    }
+}
+
+// 判断节点是否存在
+bool ZkClient::Exists(const char *path) {
+    int flag = zoo_exists(m_zhandle, path, 0, nullptr);
+    if (flag == ZOK) {
+        return true;
+    }
+    return false;
+}
+
+// 设置节点数据
+bool ZkClient::SetData(const char *path, const char *data, int datalen) {
+    int flag = zoo_set(m_zhandle, path, data, datalen, -1);
+    if (flag == ZOK) {
+        LOG(INFO) << "set znode data success! path:" << path;
+        return true;
+    } else {
+        LOG(ERROR) << "set znode data error! path:" << path << " errno:" << flag;
+        return false;
     }
 }
